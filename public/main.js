@@ -2,7 +2,6 @@ let n = 1;
 getPage.onclick = () => {
   const request = new XMLHttpRequest();
   request.open("GET", `/page${n + 1}`);
-  console.log(n);
   request.onreadystatechange = () => {
     if (request.readyState === 4) {
       if (request.status >= 200 && request.status < 300) {
@@ -14,9 +13,13 @@ getPage.onclick = () => {
         });
         n += 1; // 请求成功就+1
       } else {
-        console.log("hello");
         alert(`加载Page${n + 1}失败`);
       }
+    }
+    if (n > 2) {
+      // 加载完第三页后禁用按钮
+      getPage.setAttribute("disabled", "disabled");
+      // console.log("11111");
     }
   };
   request.send();
@@ -28,7 +31,7 @@ getJSON.onclick = () => {
   request.onreadystatechange = () => {
     if (request.readyState === 4) {
       if (request.status >= 200 && request.status < 300) {
-        const object = JSON.parse(request.response); // 将符合JSON语法的字符串变成对象或其他东西
+        const object = JSON.parse(request.response);
         myName.textContent = object.name;
       } else {
         alert("加载JSON失败");
